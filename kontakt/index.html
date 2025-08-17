@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kontakt - Fotogram</title>
+    <link rel="stylesheet" href="../assets/css/style.css" />
+    <script src="../assets/js/index.js"></script>
+  </head>
+  <body>
+    <header id="header" role="banner"></header>
+    <main id="main" role="main">
+      <section>
+        <h1>Kontakt</h1>
+        <article>
+          <h2>Schreiben Sie mir eine Nachricht</h2>
+          <form action="#" method="post" aria-label="Kontaktformular">
+            <fieldset>
+              <legend>Ihre Kontaktdaten</legend>
+
+              <div>
+                <label for="name">Name <em>(Pflichtfeld)</em>:</label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  required
+                  aria-describedby="name-help"
+                />
+                <small id="name-help"
+                  >Bitte geben Sie Ihren vollständigen Namen ein.</small
+                >
+              </div>
+
+              <div>
+                <label for="email"
+                  >E-Mail-Adresse <em>(Pflichtfeld)</em>:</label
+                >
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  required
+                  aria-describedby="email-help"
+                />
+                <small id="email-help"
+                  >Wir benötigen Ihre E-Mail-Adresse, um Ihnen antworten zu
+                  können.</small
+                >
+              </div>
+
+              <div>
+                <label for="phone">Telefonnummer <em>(optional)</em>:</label>
+                <input
+                  type="tel"
+                  id="phone"
+                  name="phone"
+                  aria-describedby="phone-help"
+                />
+                <small id="phone-help"
+                  >Für dringende Rückfragen können Sie uns Ihre Telefonnummer
+                  mitteilen.</small
+                >
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend>Ihre Nachricht</legend>
+
+              <div>
+                <label for="subject">Betreff <em>(Pflichtfeld)</em>:</label>
+                <input
+                  type="text"
+                  id="subject"
+                  name="subject"
+                  required
+                  aria-describedby="subject-help"
+                />
+                <small id="subject-help"
+                  >Fassen Sie Ihr Anliegen kurz zusammen.</small
+                >
+              </div>
+
+              <div>
+                <label for="message">Nachricht <em>(Pflichtfeld)</em>:</label>
+                <textarea
+                  id="message"
+                  name="message"
+                  rows="6"
+                  required
+                  aria-describedby="message-help"
+                ></textarea>
+                <small id="message-help"
+                  >Beschreiben Sie hier ausführlich Ihr Anliegen oder Ihre
+                  Frage.</small
+                >
+              </div>
+            </fieldset>
+
+            <div>
+              <button type="submit">Nachricht senden</button>
+              <button type="reset">Formular zurücksetzen</button>
+            </div>
+          </form>
+        </article>
+      </section>
+    </main>
+    <footer role="contentinfo">
+      <p>&copy; 2025 Fotogram - Professionelle Fotografie</p>
+    </footer>
+  </body>
+</html>
