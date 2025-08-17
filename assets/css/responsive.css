@@ -2,19 +2,6 @@
    RESPONSIVE DESIGN
    ======================================== */
 
-@media (max-width: 400px) {
-  p,
-  li,
-  a,
-  button,
-  label,
-  input,
-  textarea,
-  select {
-    font-size: 0.8rem;
-  }
-}
-
 @media (max-width: 768px) {
   /* Navigation */
   .navigation-desktop {
