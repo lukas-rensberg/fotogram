@@ -1,0 +1,43 @@
+/* ========================================
+   LAYOUT COMPONENTS
+   ======================================== */
+
+/* Header */
+header {
+  position: relative;
+  z-index: var(--z-index-header);
+  height: var(--header-height);
+  background-color: var(--color-background-header);
+  color: var(--color-text-primary);
+  width: 100%;
+}
+
+/* Main Content */
+main {
+  min-height: calc(100vh - calc(var(--header-height) * 2));
+  padding: var(--spacing-xxl) var(--spacing-lg);
+}
+
+/* Footer */
+footer {
+  background-color: var(--color-background-header);
+  color: var(--color-text-primary);
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  margin-top: auto;
+  height: 60px;
+}
+
+/* Content Sections */
+section {
+  max-width: var(--max-content-width);
+  margin: 0 auto;
+}
+
+article {
+  padding: var(--spacing-xl);
+  margin-top: var(--spacing-lg);
+  background-color: var(--color-background-overlay);
+  border-radius: var(--border-radius-md);
+}

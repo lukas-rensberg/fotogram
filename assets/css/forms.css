@@ -1,0 +1,93 @@
+/* ========================================
+   FORM COMPONENTS
+   ======================================== */
+
+form {
+  max-width: var(--max-form-width);
+  margin: 0 auto;
+  padding: var(--spacing-lg);
+}
+
+fieldset {
+  margin-bottom: var(--spacing-lg);
+  padding: var(--spacing-lg);
+  border: 2px solid var(--color-primary-light);
+  border-radius: var(--border-radius-md);
+}
+
+legend {
+  padding: 0 var(--spacing-sm);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+}
+
+label {
+  display: block;
+  margin-bottom: var(--spacing-xs);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+}
+
+input,
+textarea,
+select {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: var(--spacing-sm);
+  border: 2px solid var(--color-primary-light);
+  border-radius: var(--border-radius-sm);
+  background-color: var(--color-text-primary);
+  color: var(--color-primary-medium);
+  box-sizing: border-box;
+  transition: border-color var(--transition-fast);
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: var(--color-focus);
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3);
+}
+
+input:required:invalid {
+  border-color: var(--color-error);
+}
+
+input:required:valid {
+  border-color: var(--color-success);
+}
+
+button[type="submit"],
+button[type="reset"] {
+  margin: var(--spacing-sm) var(--spacing-sm) 0 0;
+  padding: 12px 24px;
+  font-size: 1rem;
+  cursor: pointer;
+  background-color: var(--color-primary-light);
+  color: var(--color-text-primary);
+  border: 2px solid var(--color-primary-light);
+  border-radius: var(--border-radius-sm);
+  transition: background-color var(--transition-fast),
+    border-color var(--transition-fast);
+  min-height: 44px;
+  min-width: 44px;
+}
+
+button[type="submit"]:hover,
+button[type="submit"]:focus,
+button[type="reset"]:hover,
+button[type="reset"]:focus {
+  background-color: var(--color-text-primary);
+  color: var(--color-primary-medium);
+  border-color: var(--color-text-primary);
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+small {
+  display: block;
+  margin-top: -5px;
+  margin-bottom: var(--spacing-md);
+  color: var(--color-text-secondary);
+}

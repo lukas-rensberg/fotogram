@@ -1,0 +1,60 @@
+/* ========================================
+   CSS VARIABLES & ROOT CONFIGURATION
+   ======================================== */
+
+:root {
+  /* Color Palette */
+  --color-primary-dark: #0c222a;
+  --color-primary-medium: #1a2832;
+  --color-primary-light: #2a4a5a;
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #cccccc;
+  --color-background-main: #1a2832;
+  --color-background-header: #0c222a;
+  --color-background-modal: rgba(0, 0, 0, 0.9);
+  --color-background-overlay: rgba(12, 34, 42, 0.7);
+
+  /* Accent Colors */
+  --color-success: #51cf66;
+  --color-error: #ff6b6b;
+  --color-focus: #ffffff;
+
+  /* Typography */
+  --font-family-primary: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  --font-size-base: 16px;
+  --font-size-small: 0.875rem;
+  --font-size-large: 1.8rem;
+  --font-size-xlarge: 2.5rem;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
+  --line-height-base: 1.5;
+  --line-height-relaxed: 1.6;
+
+  /* Spacing */
+  --spacing-xs: 5px;
+  --spacing-sm: 10px;
+  --spacing-md: 15px;
+  --spacing-lg: 20px;
+  --spacing-xl: 30px;
+  --spacing-xxl: 40px;
+
+  /* Border Radius */
+  --border-radius-sm: 4px;
+  --border-radius-md: 8px;
+  --border-radius-full: 50%;
+
+  /* Transitions */
+  --transition-fast: 0.3s;
+  --transition-medium: 0.5s;
+
+  /* Layout */
+  --header-height: 60px;
+  --max-content-width: 800px;
+  --max-form-width: 600px;
+  --max-gallery-width: 1200px;
+
+  /* Z-Index Scale */
+  --z-index-modal: 1000;
+  --z-index-header: 100;
+}

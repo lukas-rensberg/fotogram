@@ -1,0 +1,62 @@
+/* ========================================
+   RESPONSIVE DESIGN
+   ======================================== */
+
+@media (max-width: 400px) {
+  p,
+  li,
+  a,
+  button,
+  label,
+  input,
+  textarea,
+  select {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Navigation */
+  .navigation-desktop {
+    display: none;
+  }
+
+  .navigation-mobile {
+    display: block;
+  }
+
+  /* Typography */
+  .gallery-title {
+    font-size: 2rem;
+  }
+
+  /* Gallery */
+  .photo-grid {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px;
+  }
+
+  /* Modal */
+  .modal-navigation-button--previous {
+    left: var(--spacing-sm);
+  }
+
+  .modal-navigation-button--next {
+    right: var(--spacing-sm);
+  }
+
+  .modal-close-button {
+    top: var(--spacing-sm);
+    right: var(--spacing-sm);
+  }
+
+  /* Category filters wrap better on mobile */
+  .category-filters {
+    gap: var(--spacing-xs);
+  }
+
+  .category-filter {
+    padding: var(--spacing-xs) var(--spacing-md);
+    font-size: 0.9rem;
+  }
+}
