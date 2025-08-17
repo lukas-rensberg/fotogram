@@ -9,8 +9,7 @@ function buildHeader() {
   // Build navigation markup
   headerEl.innerHTML += `
     <div class="navigation-container">
-        <a href="/fotogram/"><img id="fotogram_logo" src="/fotogram/assets/img/logo.svg" alt="Fotogram Logo" /></a>
-        <h1>Fotogram</h1>
+        <a href="/fotogram/"><img class="logo-fotogram" src="/fotogram/assets/img/logo.svg" alt="Fotogram Logo" /></a>
         <nav class="navigation-desktop" aria-label="Hauptnavigation">
             <ul>
                 <li><a class="navigation-link-desktop" href="/fotogram/impressum">Impressum</a></li>

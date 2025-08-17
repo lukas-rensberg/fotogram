@@ -2,7 +2,7 @@
    RESPONSIVE DESIGN
    ======================================== */
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   /* Navigation */
   .navigation-desktop {
     display: none;
@@ -19,7 +19,7 @@
 
   /* Gallery */
   .photo-grid {
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 12px;
   }
 

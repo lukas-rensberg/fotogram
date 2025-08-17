@@ -7,7 +7,8 @@ function setupGallery() {
   
   content.innerHTML = `
     <section class="gallery-header">
-      <h2 class="gallery-title">Deine Oldtimer Bildergalerie</h2>
+      <h1 class="gallery-title">Fotogram</h1>
+      <h2 class="gallery-subtitle">Deine Oldtimer Bildergalerie</h2>
       <div class="category-filters" role="tablist" aria-label="Kategoriefilter">
         ${Object.entries(categories).map(([key, label]) => `
           <button 

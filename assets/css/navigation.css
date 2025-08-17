@@ -4,7 +4,7 @@
 
 .navigation-container {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
   flex-direction: row;
   height: var(--header-height);
@@ -12,8 +12,8 @@
 }
 
 /* Logo */
-#fotogram_logo {
-  width: 100px;
+.logo-fotogram {
+  width: 180px;
   height: 40px;
 }
 

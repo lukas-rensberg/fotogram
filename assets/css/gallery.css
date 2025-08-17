@@ -16,6 +16,15 @@
   animation: slideInFromLeft 0.8s ease 0.2s forwards;
 }
 
+.gallery-subtitle {
+  font-size: var(--font-size-large);
+  font-weight: var(--font-weight-normal);
+  margin: 0 0 var(--spacing-lg) 0;
+  color: var(--color-text-secondary);
+  opacity: 0;
+  animation: slideInFromLeft 0.8s ease 0.2s forwards;
+}
+
 .category-filters {
   display: flex;
   justify-content: center;
