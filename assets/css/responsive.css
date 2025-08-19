@@ -24,6 +24,29 @@
   }
 
   /* Modal */
+  .modal-content {
+    max-width: 95vw;
+    max-height: 95vh;
+    margin: var(--spacing-sm);
+  }
+
+  .modal-image-container {
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+
+  .modal-technical-data {
+    flex: none;
+    width: 100%;
+    max-height: 40vh;
+  }
+
+  .modal-navigation-button {
+    padding: 12px 15px;
+    font-size: 1.5rem;
+    top: 20%;
+  }
+
   .modal-navigation-button--previous {
     left: var(--spacing-sm);
   }
@@ -35,6 +58,8 @@
   .modal-close-button {
     top: var(--spacing-sm);
     right: var(--spacing-sm);
+    padding: 10px 12px;
+    font-size: 1.2rem;
   }
 
   /* Category filters wrap better on mobile */
@@ -45,5 +70,60 @@
   .category-filter {
     padding: var(--spacing-xs) var(--spacing-md);
     font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Very small screens - improve modal experience */
+  .modal-content {
+    max-width: 98vw;
+    max-height: 90vh;
+    margin: var(--spacing-xs);
+  }
+
+  .modal-image-container {
+    gap: var(--spacing-sm);
+  }
+
+  .modal-technical-data {
+    padding: var(--spacing-md);
+    max-height: 35vh;
+  }
+
+  .technical-data-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-xs);
+  }
+
+  .technical-data-value {
+    text-align: left;
+    margin-left: 0;
+    font-size: 0.9rem;
+  }
+
+  .modal-navigation-button {
+    padding: 10px 12px;
+    font-size: 1.2rem;
+  }
+
+  .modal-navigation-button--previous {
+    left: 5px;
+  }
+
+  .modal-navigation-button--next {
+    right: 5px;
+  }
+
+  .modal-close-button {
+    top: 5px;
+    right: 5px;
+    padding: 8px 10px;
+    font-size: 1rem;
+  }
+
+  /* Ensure buttons don't overlap */
+  .modal-image {
+    margin: 0 auto;
   }
 }

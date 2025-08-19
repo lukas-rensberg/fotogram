@@ -48,7 +48,7 @@ function prepareModal() {
 }
 
 function showModal(index) {
-  if (index < 0 || index >= photos.length) return;
+  if (index < 0 || index >= filteredPhotos.length) return;
   
   activeIndex = index;
   previousFocus = document.activeElement;
@@ -95,6 +95,11 @@ function hideModal() {
 }
 
 function goToPrevious() {
+  if (!filteredPhotos || filteredPhotos.length === 0) {
+    console.error('No filtered photos available');
+    return;
+  }
+  
   if (activeIndex > 0) {
     activeIndex--;
     updateModalContent();
@@ -103,7 +108,12 @@ function goToPrevious() {
 }
 
 function goToNext() {
-  if (activeIndex < photos.length - 1) {
+  if (!filteredPhotos || filteredPhotos.length === 0) {
+    console.error('No filtered photos available');
+    return;
+  }
+  
+  if (activeIndex < filteredPhotos.length - 1) {
     activeIndex++;
     updateModalContent();
     updateNavButtons();
@@ -114,19 +124,34 @@ function updateModalContent() {
   const img = document.getElementById("modalImage");
   const caption = document.getElementById("modal-caption");
   const modalTitle = document.getElementById("modal-title");
-  const photo = photos[activeIndex];
+  const technicalDataGrid = document.getElementById("technicalDataGrid");
   
-  img.src = photo.fullsize;
-  img.alt = photo.alt;
-  caption.textContent = photo.caption;
-  modalTitle.textContent = `Vergrößerte Bildansicht: ${photo.alt} (Bild ${activeIndex + 1} von ${photos.length})`;
+  // Check if elements exist and if we have valid data
+  if (!img || !caption || !modalTitle || !technicalDataGrid || !filteredPhotos || activeIndex < 0 || activeIndex >= filteredPhotos.length) {
+    console.error('Modal elements or photo data not found');
+    return;
+  }
+  
+  const photo = filteredPhotos[activeIndex];
+  if (!photo) {
+    console.error('Photo not found at index:', activeIndex);
+    return;
+  }
+  
+  img.src = photo.fullsize || photo.thumbnail || '';
+  img.alt = photo.alt || '';
+  caption.textContent = photo.caption || '';
+  modalTitle.textContent = `Vergrößerte Bildansicht: ${photo.alt} (Bild ${activeIndex + 1} von ${filteredPhotos.length})`;
+  
+  // Update technical data
+  updateTechnicalData(photo.technicalData || {});
   
   // Announce to screen readers
   const announcement = document.createElement('div');
   announcement.setAttribute('aria-live', 'polite');
   announcement.setAttribute('aria-atomic', 'true');
   announcement.className = 'screen-reader-only';
-  announcement.textContent = `Bild ${activeIndex + 1} von ${photos.length}: ${photo.alt}`;
+  announcement.textContent = `Bild ${activeIndex + 1} von ${filteredPhotos.length}: ${photo.alt}`;
   document.body.appendChild(announcement);
   
   // Remove announcement after screen reader has processed it
@@ -137,12 +162,56 @@ function updateModalContent() {
   }, 1000);
 }
 
+function updateTechnicalData(technicalData) {
+  const technicalDataGrid = document.getElementById("technicalDataGrid");
+  if (!technicalDataGrid) return;
+  
+  // Clear existing content
+  technicalDataGrid.innerHTML = '';
+  
+  // Technical data labels in German
+  const labels = {
+    motor: 'Motor',
+    leistung: 'Leistung',
+    hubraum: 'Hubraum',
+    getriebe: 'Getriebe',
+    hoechstgeschwindigkeit: 'Höchstgeschwindigkeit',
+    verbrauch: 'Verbrauch',
+    gewicht: 'Gewicht'
+  };
+  
+  // Create technical data items
+  Object.entries(technicalData).forEach(([key, value]) => {
+    if (labels[key] && value) {
+      const dataItem = document.createElement('div');
+      dataItem.className = 'technical-data-item';
+      
+      const label = document.createElement('span');
+      label.className = 'technical-data-label';
+      label.textContent = labels[key];
+      
+      const valueSpan = document.createElement('span');
+      valueSpan.className = 'technical-data-value';
+      valueSpan.textContent = value;
+      
+      dataItem.appendChild(label);
+      dataItem.appendChild(valueSpan);
+      technicalDataGrid.appendChild(dataItem);
+    }
+  });
+}
+
 function updateNavButtons() {
   const prevBtn = document.getElementById("prevBtn");
   const nextBtn = document.getElementById("nextBtn");
   
+  if (!prevBtn || !nextBtn || !filteredPhotos) {
+    console.error('Navigation buttons or filtered photos not found');
+    return;
+  }
+  
   prevBtn.disabled = activeIndex === 0;
-  nextBtn.disabled = activeIndex === photos.length - 1;
+  nextBtn.disabled = activeIndex === filteredPhotos.length - 1;
 }
 
 // Focus trap utility for modal accessibility

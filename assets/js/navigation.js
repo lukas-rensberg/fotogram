@@ -13,7 +13,6 @@ function buildHeader() {
         <nav class="navigation-desktop" aria-label="Hauptnavigation">
             <ul>
                 <li><a class="navigation-link-desktop" href="/fotogram/impressum">Impressum</a></li>
-                <li><a class="navigation-link-desktop" href="/fotogram/kontakt">Kontakt</a></li>
             </ul>
         </nav>
 
@@ -24,7 +23,6 @@ function buildHeader() {
             <div class="mobile-menu-dropdown" id="mobile-menu" aria-hidden="true">
                 <ul>
                     <li><a class="mobile-menu-link" href="/fotogram/impressum">Impressum</a></li>
-                    <li><a class="mobile-menu-link" href="/fotogram/kontakt">Kontakt</a></li>
                 </ul>
             </div>
         </nav>

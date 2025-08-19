@@ -31,10 +31,18 @@ function setupGallery() {
         <h3 id="modal-title" class="screen-reader-only">Vergrößerte Bildansicht</h3>
         <button class="modal-close-button" id="modalClose" type="button" aria-label="Dialog schließen">&times;</button>
         <button class="modal-navigation-button modal-navigation-button--previous" id="prevBtn" type="button" aria-label="Vorheriges Bild">&#8249;</button>
-        <figure>
-          <img class="modal-image" id="modalImage" src="" alt="">
-          <figcaption id="modal-caption" class="screen-reader-only"></figcaption>
-        </figure>
+        <div class="modal-image-container">
+          <figure>
+            <img class="modal-image" id="modalImage" src="" alt="">
+            <figcaption id="modal-caption" class="screen-reader-only"></figcaption>
+          </figure>
+          <div class="modal-technical-data" id="modalTechnicalData">
+            <h4>Technische Daten</h4>
+            <div class="technical-data-grid" id="technicalDataGrid">
+              <!-- Technical data will be populated here -->
+            </div>
+          </div>
+        </div>
         <button class="modal-navigation-button modal-navigation-button--next" id="nextBtn" type="button" aria-label="Nächstes Bild">&#8250;</button>
       </div>
     </div>
@@ -51,8 +59,8 @@ function displayPhotos(filter = 'all') {
   // Clear existing photos
   grid.innerHTML = '';
   
-  // Filter photos based on category
-  const filteredPhotos = filter === 'all' ? photos : photos.filter(photo => photo.category === filter);
+  // Filter photos based on category and update global state
+  filteredPhotos = filter === 'all' ? photos : photos.filter(photo => photo.category === filter);
   
   filteredPhotos.forEach((photo, idx) => {
     const item = document.createElement("article");
@@ -80,13 +88,12 @@ function displayPhotos(filter = 'all') {
       item.classList.add('loading');
     }
     
-    // Event listeners - use original index for modal
-    const originalIndex = photos.indexOf(photo);
-    item.onclick = () => showModal(originalIndex);
+    // Event listeners - use filtered index for modal
+    item.onclick = () => showModal(idx);
     item.onkeydown = (e) => {
       if (e.key === "Enter" || e.key === " ") {
         e.preventDefault();
-        showModal(originalIndex);
+        showModal(idx);
       }
     };
     
@@ -110,43 +117,6 @@ function filterPhotos(category) {
   
   // Display filtered photos
   displayPhotos(category);
-}
-
-// Create placeholder image
-function createPlaceholderImage(photo) {
-  const canvas = document.createElement('canvas');
-  canvas.width = 400;
-  canvas.height = 400;
-  const ctx = canvas.getContext('2d');
-  
-  // Gradient background
-  const gradient = ctx.createLinearGradient(0, 0, 400, 400);
-  gradient.addColorStop(0, '#2a4a5a');
-  gradient.addColorStop(1, '#1a2832');
-  ctx.fillStyle = gradient;
-  ctx.fillRect(0, 0, 400, 400);
-  
-  // Car silhouette (simple rectangle representing a car)
-  ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
-  ctx.fillRect(80, 180, 240, 80);
-  ctx.fillRect(100, 160, 200, 20);
-  
-  // Wheels
-  ctx.beginPath();
-  ctx.arc(130, 260, 20, 0, 2 * Math.PI);
-  ctx.arc(270, 260, 20, 0, 2 * Math.PI);
-  ctx.fill();
-  
-  // Text
-  ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-  ctx.font = 'bold 24px Arial';
-  ctx.textAlign = 'center';
-  ctx.fillText(photo.caption, 200, 320);
-  
-  ctx.font = '16px Arial';
-  ctx.fillText('Coming Soon', 200, 350);
-  
-  return canvas.toDataURL();
 }
 
 // Handle image loading
