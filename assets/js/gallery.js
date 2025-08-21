@@ -50,11 +50,13 @@ function filterPhotos(category) {
   document.querySelectorAll(".category-filter").forEach((btn) => {
     btn.classList.remove("active");
     btn.setAttribute("aria-selected", "false");
+    btn.setAttribute("tabindex", "-1");
   });
 
   const activeBtn = document.querySelector(`[data-category="${category}"]`);
   activeBtn.classList.add("active");
   activeBtn.setAttribute("aria-selected", "true");
+  activeBtn.setAttribute("tabindex", "0");
 
   // Display filtered photos
   displayPhotos(category);
@@ -120,7 +122,7 @@ function createModalTemplate() {
 
 function createGalleryTemplate() {
   return `
-    <section class="photo-grid" id="photoGrid" role="region" aria-label="Fotogalerie">
+    <section class="photo-grid" id="photoGrid" aria-label="Fotogalerie">
     </section>
   `;
 }
@@ -130,7 +132,7 @@ function createHeaderTemplate() {
     <section class="gallery-header">
       <h1 class="gallery-title">Fotogram</h1>
       <h2 class="gallery-subtitle">Deine Oldtimer Bildergalerie</h2>
-      <div class="category-filters" role="tablist" aria-label="Kategoriefilter">
+      <div class="category-filters" role="tablist" aria-label="Kategoriefilter" onkeydown="handleTablistKeydown(event)">
         ${Object.entries(categories)
           .map(
             ([key, label]) => `
@@ -139,6 +141,7 @@ function createHeaderTemplate() {
             data-category="${key}"
             role="tab"
             aria-selected="${key === "all"}"
+            tabindex="${key === "all" ? "0" : "-1"}"
             onclick="filterPhotos('${key}')"
           >
             ${label}
@@ -154,8 +157,9 @@ function createHeaderTemplate() {
 function createPhotoItemTemplate(photo) {
   const item = document.createElement("article");
   item.className = "photo-item";
-  item.tabIndex = 0;
   item.setAttribute("data-category", photo.category);
+  item.setAttribute("role", "button");
+  item.setAttribute("tabindex", "0");
   item.setAttribute("aria-label", `Bild vergrößern: ${photo.alt}`);
 
   // Create placeholder image if needed
@@ -180,4 +184,39 @@ function createPhotoItemTemplate(photo) {
   }
 
   return item;
+}
+
+// Handle keyboard navigation for tablist
+function handleTablistKeydown(event) {
+  const tabs = Array.from(document.querySelectorAll('.category-filter'));
+  const currentIndex = tabs.findIndex(tab => tab.getAttribute('tabindex') === '0');
+  let newIndex = currentIndex;
+
+  switch (event.key) {
+    case 'ArrowLeft':
+    case 'ArrowUp':
+      event.preventDefault();
+      newIndex = currentIndex > 0 ? currentIndex - 1 : tabs.length - 1;
+      break;
+    case 'ArrowRight':
+    case 'ArrowDown':
+      event.preventDefault();
+      newIndex = currentIndex < tabs.length - 1 ? currentIndex + 1 : 0;
+      break;
+    case 'Home':
+      event.preventDefault();
+      newIndex = 0;
+      break;
+    case 'End':
+      event.preventDefault();
+      newIndex = tabs.length - 1;
+      break;
+    default:
+      return;
+  }
+
+  // Update focus and tabindex
+  tabs[currentIndex].setAttribute('tabindex', '-1');
+  tabs[newIndex].setAttribute('tabindex', '0');
+  tabs[newIndex].focus();
 }
