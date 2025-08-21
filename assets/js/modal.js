@@ -141,7 +141,13 @@ function updateModalContent() {
   img.src = photo.fullsize || photo.thumbnail || '';
   img.alt = photo.alt || '';
   caption.textContent = photo.caption || '';
-  modalTitle.textContent = `Vergrößerte Bildansicht: ${photo.alt} (Bild ${activeIndex + 1} von ${filteredPhotos.length})`;
+  modalTitle.textContent = `${photo.alt}`;
+  
+  // Update counter
+  const dialogCounter = document.getElementById("dialogCounter");
+  if (dialogCounter) {
+    dialogCounter.textContent = `${activeIndex + 1} / ${filteredPhotos.length}`;
+  }
   
   // Update technical data
   updateTechnicalData(photo.technicalData || {});
@@ -171,32 +177,29 @@ function updateTechnicalData(technicalData) {
   
   // Technical data labels in German
   const labels = {
-    motor: 'Motor',
-    leistung: 'Leistung',
-    hubraum: 'Hubraum',
-    getriebe: 'Getriebe',
-    hoechstgeschwindigkeit: 'Höchstgeschwindigkeit',
-    verbrauch: 'Verbrauch',
-    gewicht: 'Gewicht'
+    motor: { label: 'Motor' },
+    leistung: { label: 'Leistung' },
+    hubraum: { label: 'Hubraum' },
+    getriebe: { label: 'Getriebe' },
+    hoechstgeschwindigkeit: { label: 'Höchstgeschwindigkeit'},
+    verbrauch: { label: 'Verbrauch'},
+    gewicht: { label: 'Gewicht'},
   };
   
-  // Create technical data items
+  // Create technical data cards
   Object.entries(technicalData).forEach(([key, value]) => {
     if (labels[key] && value) {
-      const dataItem = document.createElement('div');
-      dataItem.className = 'technical-data-item';
+      const dataCard = document.createElement('div');
+      dataCard.className = 'technical-data-card';
       
-      const label = document.createElement('span');
-      label.className = 'technical-data-label';
-      label.textContent = labels[key];
+      dataCard.innerHTML = `
+        <div class="technical-data-card-content">
+          <div class="technical-data-card-label">${labels[key].label}</div>
+          <div class="technical-data-card-value">${value}</div>
+        </div>
+      `;
       
-      const valueSpan = document.createElement('span');
-      valueSpan.className = 'technical-data-value';
-      valueSpan.textContent = value;
-      
-      dataItem.appendChild(label);
-      dataItem.appendChild(valueSpan);
-      technicalDataGrid.appendChild(dataItem);
+      technicalDataGrid.appendChild(dataCard);
     }
   });
 }

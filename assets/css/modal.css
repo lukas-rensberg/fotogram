@@ -1,177 +1,465 @@
 /* ========================================
-   MODAL COMPONENTS
+   MODAL STYLES
    ======================================== */
 
+/* Modal (Popup) */
 .modal {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: var(--z-index-modal);
-  display: none;
   width: 100%;
   height: 100%;
-  cursor: pointer;
-  background-color: var(--color-background-modal);
+  
+  background-color: rgba(0, 0, 0, 0.9);
+  
+  display: none;
   opacity: 0;
+  
   transition: opacity 0.3s ease;
+  
+  z-index: 1000;
 }
 
+/* Make modal visible */
 .modal.active {
   display: flex;
-  align-items: center;
-  justify-content: center;
   opacity: 1;
-}
-
-.modal-content {
-  position: relative;
-  max-width: 90vw;
-  max-height: 90vh;
-  width: auto;
-  height: auto;
-  cursor: default;
-  transform: scale(0.8);
-  transition: transform 0.3s ease;
-  display: flex;
+  
   align-items: center;
   justify-content: center;
 }
 
-.modal.active .modal-content {
-  transform: scale(1);
-  animation: scaleIn 0.3s ease;
-}
-
-.modal-image {
-  max-width: 100%;
-  max-height: 100%;
-  width: auto;
-  height: auto;
-  object-fit: cover;
-  border-radius: var(--border-radius-md);
-}
-
-.modal-navigation-button {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  padding: 15px 20px;
-  background-color: rgba(255, 255, 255, 0.2);
-  border: none;
-  color: var(--color-text-primary);
-  font-size: 2rem;
-  cursor: pointer;
-  border-radius: var(--border-radius-full);
-  backdrop-filter: blur(10px);
-  transition: background-color var(--transition-fast);
-}
-
-.modal-navigation-button:hover,
-.modal-navigation-button:focus {
-  background-color: rgba(255, 255, 255, 0.3);
-  outline: 2px solid var(--color-focus);
-  outline-offset: 2px;
-}
-
-.modal-navigation-button:disabled {
-  opacity: 0.3;
-  cursor: not-allowed;
-}
-
-.modal-navigation-button--previous {
-  left: -70px;
-}
-
-.modal-navigation-button--next {
-  right: -70px;
-}
-
-.modal-close-button {
-  position: absolute;
-  top: -60px;
-  right: 0;
-  padding: 12px 16px;
-  background-color: rgba(255, 255, 255, 0.2);
-  border: none;
-  color: var(--color-text-primary);
-  font-size: 1.5rem;
-  cursor: pointer;
-  border-radius: var(--border-radius-full);
-  backdrop-filter: blur(10px);
-  transition: background-color var(--transition-fast);
-  z-index: 10;
-}
-
-.modal-close-button:hover,
-.modal-close-button:focus {
-  background-color: rgba(255, 255, 255, 0.3);
-  outline: 2px solid var(--color-focus);
-  outline-offset: 2px;
-}
-
-/* Modal Image Container */
-.modal-image-container {
+/* Modal container */
+.modal-dialog {
+  background-color: white;
+  
+  border-radius: 10px;
+  
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.3);
+  
+  border: 1px solid #e0e0e0;
+  
+  max-width: 1000px;
+  max-height: 90vh;
+  width: 90%;
+  
+  overflow: hidden;
+  
+  transform: scale(0.9) translateY(20px);
+  transition: transform 0.3s ease;
+  
   display: flex;
-  gap: var(--spacing-xl);
-  align-items: flex-start;
-  max-width: 100%;
-  max-height: 100%;
+  flex-direction: column;
 }
 
-.modal-image-container figure {
-  margin: 0;
-  flex: 1;
-  min-width: 0;
+.modal.active .modal-dialog {
+  transform: scale(1) translateY(0);
 }
 
-/* Technical Data Section */
-.modal-technical-data {
-  flex: 0 0 300px;
-  background-color: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(10px);
-  border-radius: var(--border-radius-md);
-  padding: var(--spacing-lg);
-  color: var(--color-text-primary);
-  max-height: 70vh;
-  overflow-y: auto;
-}
-
-.modal-technical-data h4 {
-  margin: 0 0 var(--spacing-md) 0;
-  font-size: 1.2rem;
-  font-weight: var(--font-weight-bold);
-  color: var(--color-text-primary);
-  border-bottom: 2px solid var(--color-primary-light);
-  padding-bottom: var(--spacing-xs);
-}
-
-.technical-data-grid {
-  display: grid;
-  gap: var(--spacing-sm);
-}
-
-.technical-data-item {
+/* Modal header */
+.modal-header {
+  background-color: #f8f9fa;
+  
+  padding: 20px 30px;
+  
+  border-bottom: 1px solid #e0e0e0;
+  
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: var(--spacing-xs) 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.technical-data-item:last-child {
-  border-bottom: none;
+/* Modal title */
+.modal-title {
+  color: #333333;
+  
+  font-size: 24px;
+  
+  font-weight: 600;
+  
+  margin: 0;
 }
 
-.technical-data-label {
-  font-weight: var(--font-weight-medium);
-  color: var(--color-text-secondary);
+/* Close button */
+.modal-close-button {
+  background-color: #f0f0f0;
+  
+  border: 1px solid #d0d0d0;
+  
+  color: #666666;
+  
+  font-size: 24px;
+  
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  
+  cursor: pointer;
+  
+  transition: all 0.2s ease;
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Close button on hover */
+.modal-close-button:hover,
+.modal-close-button:focus {
+  background-color: #e0e0e0;
+  color: #333333;
+  transform: scale(1.05);
+  outline: none;
+}
+
+/* Modal body */
+.modal-body {
+  flex: 1;
+  
+  padding: 0;
+  
+  overflow-x: hidden;
+  
+  overflow-y: hidden;
+  
+  background-color: white;
+  
+  min-height: 0;
+}
+
+/* Content wrapper */
+.modal-content-wrapper {
+  display: flex;
+  
+  height: 100%;
+  
+  min-height: 400px;
+  
+  max-height: 100%;
+}
+
+/* Image section */
+.modal-image-section {
+  flex: 2;
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  background-color: #f8f9fa;
+  
+  position: relative;
+  
+  overflow: hidden;
+}
+
+/* Image container */
+.modal-photo-figure {
+  margin: 0;
+  
+  position: relative;
+  
+  width: 100%;
+  height: 100%;
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Main image */
+.modal-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  
+  border-radius: 8px;
+  
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Bild-Beschreibung */
+.modal-photo-caption {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  
+  background-color: rgba(0, 0, 0, 0.8);
+  
+  color: white;
+  
+  padding: 15px 20px;
+  
+  border-radius: 12px;
+  
+  font-size: 16px;
+  
+  font-weight: 500;
+}
+
+/* Details-Bereich */
+.modal-details-section {
+  flex: 1;
+  
+  background-color: white;
+  
+  padding: 30px;
+  
+  overflow-y: scroll;
+  
+  max-height: 400px;
+  
+  border-left: 1px solid #e0e0e0;
+}
+
+/* Technische Daten Container */
+.technical-specifications {
+  display: flex;
+  flex-direction: column;
+  
+  min-height: 0;
+}
+
+/* Titel der technischen Daten */
+.specs-title {
+  color: #333333;
+  
+  font-size: 20px;
+  
+  font-weight: 600;
+  
+  margin: 0 0 25px 0;
+  
+  padding-bottom: 15px;
+  
+  border-bottom: 2px solid #e0e0e0;
+}
+
+/* Grid für technische Daten */
+.technical-data-grid {
+  display: flex;
+  flex-direction: column;
+  
+  gap: 15px;
+  
   flex: 1;
 }
 
-.technical-data-value {
-  font-weight: var(--font-weight-bold);
-  color: var(--color-text-primary);
-  text-align: right;
-  flex: 0 0 auto;
-  margin-left: var(--spacing-md);
+/* Einzelne Daten-Karte */
+.technical-data-card {
+  background-color: #f8f9fa;
+  
+  border: 1px solid #e0e0e0;
+  
+  border-radius: 12px;
+  
+  padding: 16px;
+  
+  transition: all 0.2s ease;
+  
+  cursor: default;
+}
+
+/* Daten-Karte beim Hover */
+.technical-data-card:hover {
+  transform: translateY(-1px);
+  
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  
+  border-color: #d0d0d0;
+  
+  background-color: white;
+}
+
+/* Content der Daten-Karte */
+.technical-data-card-content {
+  flex: 1;
+  
+  min-width: 0;
+}
+
+/* Label der Daten-Karte */
+.technical-data-card-label {
+  font-size: 14px;
+  
+  color: #666666;
+  
+  font-weight: 500;
+  
+  margin-bottom: 4px;
+  
+  text-transform: uppercase;
+  
+  letter-spacing: 0.5px;
+}
+
+/* Wert der Daten-Karte */
+.technical-data-card-value {
+  font-size: 16px;
+  
+  color: #333333;
+  
+  font-weight: 600;
+}
+
+/* Modal Footer (Fußbereich) */
+.modal-footer {
+  background-color: #f8f9fa;
+  
+  border-top: 1px solid #e0e0e0;
+  
+  padding: 20px 30px;
+}
+
+/* Navigation im Footer */
+.modal-navigation {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  
+  gap: 20px;
+}
+
+/* Navigation Buttons */
+.nav-button {
+  background-color: #007bff;
+  
+  border: 1px solid #0056b3;
+  
+  color: white;
+  
+  padding: 12px 20px;
+  
+  border-radius: 12px;
+  
+  cursor: pointer;
+  
+  font-size: 15px;
+  
+  font-weight: 500;
+  
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  
+  transition: all 0.2s ease;
+  
+  min-width: 120px;
+  
+  justify-content: center;
+}
+
+/* Navigation Button beim Hover */
+.nav-button:hover:not(:disabled) {
+  background-color: #0056b3;
+  
+  transform: translateY(-2px);
+  
+  box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4);
+}
+
+/* Deaktivierte Navigation Buttons */
+.nav-button:disabled {
+  background-color: #e0e0e0;
+  
+  border-color: #d0d0d0;
+  
+  color: #999999;
+  
+  cursor: not-allowed;
+  
+  transform: none;
+  
+  box-shadow: none;
+}
+
+/* Navigation Icons */
+.nav-icon {
+  font-size: 18px;
+  
+  font-weight: bold;
+}
+
+/* Bilder-Zähler */
+.image-counter {
+  background-color: white;
+  
+  padding: 10px 18px;
+  
+  border-radius: 20px;
+  
+  font-size: 14px;
+  
+  font-weight: 600;
+  
+  color: #555555;
+  
+  border: 1px solid #e0e0e0;
+  
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* ========================================
+   RESPONSIVE DESIGN FÜR MOBILE GERÄTE
+   ======================================== */
+
+/* Tablets und kleinere Bildschirme */
+@media (max-width: 768px) {
+  .modal-dialog {
+    width: 95%;
+    max-height: 95vh;
+  }
+
+  .modal-content-wrapper {
+    flex-direction: column;
+    min-height: auto;
+  }
+
+  .modal-image-section {
+    flex: none;
+    height: 250px;
+    min-height: 250px;
+  }
+
+  .modal-details-section {
+    flex: none;
+    border-left: none;
+    border-top: 1px solid #e0e0e0;
+    padding: 20px;
+  }
+
+  .modal-header,
+  .modal-footer {
+    padding: 15px 20px;
+  }
+
+  .technical-data-grid {
+    gap: 12px;
+  }
+
+  .modal-navigation {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .nav-button {
+    padding: 6px;
+    width: 100%;
+  }
+}
+
+/* Sehr kleine Bildschirme (Handys) */
+@media (max-width: 480px) {
+  .modal-title {
+    font-size: 20px;
+  }
+
+  .modal-details-section {
+    padding: 15px;
+  }
+
+  .technical-data-card {
+    padding: 12px;
+  }
 }

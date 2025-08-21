@@ -19,7 +19,12 @@ const photos = [
       getriebe: "4-Gang manuell",
       hoechstgeschwindigkeit: "135 km/h",
       verbrauch: "8.5L/100km",
-      gewicht: "820 kg"
+      gewicht: "820 kg",
+      test1: "Test Wert 1",
+      test2: "Test Wert 2", 
+      test3: "Test Wert 3",
+      test4: "Test Wert 4",
+      test5: "Test Wert 5"
     }
   },
   {
@@ -52,7 +57,7 @@ const photos = [
       motor: "2.0L Reihen-4-Zylinder",
       leistung: "109 PS (80 kW)",
       hubraum: "1997 cm³",
-      getriebe: "4-Gang automatik",
+      getriebe: "4-Gang manuell",
       hoechstgeschwindigkeit: "170 km/h",
       verbrauch: "9.2L/100km",
       gewicht: "1380 kg"
@@ -86,7 +91,7 @@ const photos = [
     description: "Jaguar E-Type - Einer der schönsten Sportwagen aller Zeiten",
     technicalData: {
       motor: "4.2L Reihen-6-Zylinder",
-      leistung: "265 PS (195 kW)",
+      leistung: "220 PS (162 kW)",
       hubraum: "4235 cm³",
       getriebe: "4-Gang manuell",
       hoechstgeschwindigkeit: "240 km/h",
