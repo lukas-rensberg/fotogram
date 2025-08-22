@@ -1,8 +1,11 @@
-// ========================================
-// CONFIGURATION & DATA
-// ========================================
+/**
+ * @fileoverview Configuration and data for the photo gallery application
+ */
 
-// Photo collection with categories
+/**
+ * Photo collection with technical data and categorization
+ * @type {Array<Object>}
+ */
 const photos = [
   {
     thumbnail: `/fotogram/assets/img/vw-kaefer.jpg`,
@@ -121,6 +124,10 @@ const photos = [
   },
 ];
 
+/**
+ * Category definitions for photo filtering
+ * @type {Object<string, string>}
+ */
 const categories = {
   all: "Alle",
   klassiker: "Klassiker",
@@ -128,8 +135,10 @@ const categories = {
   youngtimer: "Youngtimer",
 };
 
-// Global state
+/**
+ * Global application state variables
+ */
 let activeIndex = 0;
 let previousFocus = null;
 let currentFilter = "all";
-let filteredPhotos = [...photos]; // Initialize with all photos
+let filteredPhotos = [...photos];

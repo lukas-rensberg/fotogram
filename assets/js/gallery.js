@@ -1,7 +1,16 @@
-// ========================================
-// GALLERY FUNCTIONALITY
-// ========================================
+/**
+ * @fileoverview Gallery functionality for the photo gallery application
+ */
 
+if (document.getElementById("content")) {
+  setupGallery();
+  prepareModal();
+}
+
+/**
+ * Sets up the gallery by creating header, gallery grid, and modal templates
+ * and populating the photo grid with initial data
+ */
 function setupGallery() {
   const content = document.getElementById("content");
 
@@ -9,18 +18,19 @@ function setupGallery() {
   content.innerHTML += createGalleryTemplate();
   content.innerHTML += createModalTemplate();
 
-  // Populate the grid
   displayPhotos();
 }
 
+/**
+ * Displays photos in the gallery grid, optionally filtered by category
+ * @param {string} [filter="all"] - Category filter to apply
+ */
 function displayPhotos(filter = "all") {
   const grid = document.getElementById("photoGrid");
   if (!grid) return;
 
-  // Clear existing photos
   grid.innerHTML = "";
 
-  // Filter photos based on category and update global state
   filteredPhotos =
     filter === "all"
       ? photos
@@ -29,7 +39,6 @@ function displayPhotos(filter = "all") {
   filteredPhotos.forEach((photo, idx) => {
     const item = createPhotoItemTemplate(photo);
 
-    // Add event listeners
     item.onclick = () => showModal(idx);
     item.onkeydown = (e) => {
       if (e.key === "Enter" || e.key === " ") {
@@ -42,11 +51,13 @@ function displayPhotos(filter = "all") {
   });
 }
 
-// Filter photos by category
+/**
+ * Filters photos by category and updates the UI accordingly
+ * @param {string} category - Category to filter by
+ */
 function filterPhotos(category) {
   currentFilter = category;
 
-  // Update active filter button
   document.querySelectorAll(".category-filter").forEach((btn) => {
     btn.classList.remove("active");
     btn.setAttribute("aria-selected", "false");
@@ -58,11 +69,13 @@ function filterPhotos(category) {
   activeBtn.setAttribute("aria-selected", "true");
   activeBtn.setAttribute("tabindex", "0");
 
-  // Display filtered photos
   displayPhotos(category);
 }
 
-// Handle image loading
+/**
+ * Handles image loading completion by removing loading state
+ * @param {HTMLImageElement} img - The loaded image element
+ */
 function handleImageLoad(img) {
   const photoItem = img.closest(".photo-item");
   if (photoItem) {
@@ -71,55 +84,123 @@ function handleImageLoad(img) {
   }
 }
 
+/**
+ * Creates the HTML template for the modal dialog
+ * @returns {string} Modal HTML template
+ */
 function createModalTemplate() {
   return `
     <div class="modal" id="photoModal" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-hidden="true">
       <div class="modal-dialog">
-        <div class="modal-header">
-          <h3 id="modal-title" class="modal-title">Fahrzeug-Details</h3>
-          <button class="modal-close-button" id="modalClose" type="button" aria-label="Dialog schließen">&times;</button>
-        </div>
-        
-        <div class="modal-body">
-          <div class="modal-content-wrapper">
-            <div class="modal-image-section">
-              <figure class="modal-photo-figure">
-                <img class="modal-image" id="modalImage" src="" alt="">
-                <figcaption id="modal-caption" class="modal-photo-caption"></figcaption>
-              </figure>
-            </div>
-            
-            <div class="modal-details-section">
-              <div class="technical-specifications">
-                <h4 class="specs-title">Technische Daten</h4>
-                <div class="technical-data-grid" id="technicalDataGrid">
-                  <!-- Technical data will be populated here -->
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <div class="modal-footer">
-          <div class="modal-navigation">
-            <button class="nav-button nav-button--prev" id="prevBtn" type="button" aria-label="Vorheriges Fahrzeug">
-              <span class="nav-icon">←</span>
-              <span class="nav-text">Zurück</span>
-            </button>
-            <div class="image-counter">
-              <span id="dialogCounter">1 / 6</span>
-            </div>
-            <button class="nav-button nav-button--next" id="nextBtn" type="button" aria-label="Nächstes Fahrzeug">
-              <span class="nav-text">Weiter</span>
-              <span class="nav-icon">→</span>
-            </button>
-          </div>
+        ${createModalHeader()}
+        ${createModalBody()}
+        ${createModalFooter()}
+      </div>
+    </div>
+  `;
+}
+
+/**
+ * Creates the modal header template
+ * @returns {string} Modal header HTML
+ */
+function createModalHeader() {
+  return `
+    <div class="modal-header">
+      <h3 id="modal-title" class="modal-title">Fahrzeug-Details</h3>
+      <button class="modal-close-button" id="modalClose" type="button" aria-label="Dialog schließen">&times;</button>
+    </div>
+  `;
+}
+
+/**
+ * Creates the modal body template
+ * @returns {string} Modal body HTML
+ */
+function createModalBody() {
+  return `
+    <div class="modal-body">
+      <div class="modal-content-wrapper">
+        ${createModalImageSection()}
+        ${createModalDetailsSection()}
+      </div>
+    </div>
+  `;
+}
+
+/**
+ * Creates the modal image section template
+ * @returns {string} Modal image section HTML
+ */
+function createModalImageSection() {
+  return `
+    <div class="modal-image-section">
+      <figure class="modal-photo-figure">
+        <img class="modal-image" id="modalImage" src="" alt="">
+        <figcaption id="modal-caption" class="modal-photo-caption"></figcaption>
+      </figure>
+    </div>
+  `;
+}
+
+/**
+ * Creates the modal details section template
+ * @returns {string} Modal details section HTML
+ */
+function createModalDetailsSection() {
+  return `
+    <div class="modal-details-section">
+      <div class="technical-specifications">
+        <h4 class="specs-title">Technische Daten</h4>
+        <div class="technical-data-grid" id="technicalDataGrid">
         </div>
       </div>
     </div>
   `;
 }
 
+/**
+ * Creates the modal footer template
+ * @returns {string} Modal footer HTML
+ */
+function createModalFooter() {
+  return `
+    <div class="modal-footer">
+      <div class="modal-navigation">
+        ${createNavButton("prev", "←", "Zurück", "Vorheriges Fahrzeug")}
+        <div class="image-counter">
+          <span id="dialogCounter">1 / 6</span>
+        </div>
+        ${createNavButton("next", "→", "Weiter", "Nächstes Fahrzeug")}
+      </div>
+    </div>
+  `;
+}
+
+/**
+ * Creates a navigation button template
+ * @param {string} type - Button type (prev/next)
+ * @param {string} icon - Button icon
+ * @param {string} text - Button text
+ * @param {string} ariaLabel - Aria label for accessibility
+ * @returns {string} Navigation button HTML
+ */
+function createNavButton(type, icon, text, ariaLabel) {
+  const order =
+    type === "prev"
+      ? `<span class="nav-icon">${icon}</span><span class="nav-text">${text}</span>`
+      : `<span class="nav-text">${text}</span><span class="nav-icon">${icon}</span>`;
+  return `
+    <button class="nav-button nav-button--${type}" id="${type}Btn" type="button" aria-label="${ariaLabel}">
+      ${order}
+    </button>
+  `;
+}
+
+/**
+ * Creates the HTML template for the photo gallery grid
+ * @returns {string} Gallery grid HTML template
+ */
 function createGalleryTemplate() {
   return `
     <section class="photo-grid" id="photoGrid" aria-label="Fotogalerie">
@@ -127,58 +208,68 @@ function createGalleryTemplate() {
   `;
 }
 
+/**
+ * Creates the HTML template for the gallery header with filters
+ * @returns {string} Header HTML template with category filters
+ */
 function createHeaderTemplate() {
   return `
     <section class="gallery-header">
       <h1 class="gallery-title">Fotogram</h1>
       <h2 class="gallery-subtitle">Deine Oldtimer Bildergalerie</h2>
-      <div class="category-filters" role="tablist" aria-label="Kategoriefilter" onkeydown="handleTablistKeydown(event)">
-        ${Object.entries(categories)
-          .map(
-            ([key, label]) => `
-          <button 
-            class="category-filter ${key === "all" ? "active" : ""}" 
-            data-category="${key}"
-            role="tab"
-            aria-selected="${key === "all"}"
-            tabindex="${key === "all" ? "0" : "-1"}"
-            onclick="filterPhotos('${key}')"
-          >
-            ${label}
-          </button>
-        `
-          )
-          .join("")}
-      </div>
+      ${createCategoryFilters()}
     </section>
   `;
 }
 
+/**
+ * Creates the category filter buttons
+ * @returns {string} Category filters HTML
+ */
+function createCategoryFilters() {
+  const filterButtons = Object.entries(categories)
+    .map(([key, label]) => createFilterButton(key, label))
+    .join("");
+
+  return `
+    <div class="category-filters" role="tablist" aria-label="Kategoriefilter" onkeydown="handleTablistKeydown(event)">
+      ${filterButtons}
+    </div>
+  `;
+}
+
+/**
+ * Creates a single filter button
+ * @param {string} key - Category key
+ * @param {string} label - Category label
+ * @returns {string} Filter button HTML
+ */
+function createFilterButton(key, label) {
+  const isActive = key === "all";
+  return `
+    <button 
+      class="category-filter ${isActive ? "active" : ""}" 
+      data-category="${key}"
+      role="tab"
+      aria-selected="${isActive}"
+      tabindex="${isActive ? "0" : "-1"}"
+      onclick="filterPhotos('${key}')"
+    >
+      ${label}
+    </button>
+  `;
+}
+
+/**
+ * Creates a photo item element for the gallery grid
+ * @param {Object} photo - Photo data object
+ * @returns {HTMLElement} Photo item DOM element
+ */
 function createPhotoItemTemplate(photo) {
   const item = document.createElement("article");
-  item.className = "photo-item";
-  item.setAttribute("data-category", photo.category);
-  item.setAttribute("role", "button");
-  item.setAttribute("tabindex", "0");
-  item.setAttribute("aria-label", `Bild vergrößern: ${photo.alt}`);
+  setupPhotoItemAttributes(item, photo);
+  item.innerHTML = createPhotoItemHTML(photo);
 
-  // Create placeholder image if needed
-  const imgSrc = photo.isPlaceholder
-    ? createPlaceholderImage(photo)
-    : photo.thumbnail;
-
-  item.innerHTML = `
-      <figure>
-        <img src="${imgSrc}" alt="${photo.alt}" loading="lazy" class="${photo.isPlaceholder ? "placeholder-img" : ""}" onload="handleImageLoad(this)">
-        <figcaption class="photo-caption">
-          <h3>${photo.caption}</h3>
-          <p class="photo-year">${photo.year}</p>
-          <p class="photo-description">${photo.description}</p>
-        </figcaption>
-      </figure>
-    `;
-
-  // Add loading class initially
   if (!photo.isPlaceholder) {
     item.classList.add("loading");
   }
@@ -186,28 +277,69 @@ function createPhotoItemTemplate(photo) {
   return item;
 }
 
-// Handle keyboard navigation for tablist
+/**
+ * Sets up attributes for a photo item element
+ * @param {HTMLElement} item - Photo item element
+ * @param {Object} photo - Photo data object
+ */
+function setupPhotoItemAttributes(item, photo) {
+  item.className = "photo-item";
+  item.setAttribute("data-category", photo.category);
+  item.setAttribute("role", "button");
+  item.setAttribute("tabindex", "0");
+  item.setAttribute("aria-label", `Bild vergrößern: ${photo.alt}`);
+}
+
+/**
+ * Creates the HTML content for a photo item
+ * @param {Object} photo - Photo data object
+ * @returns {string} Photo item HTML content
+ */
+function createPhotoItemHTML(photo) {
+  const imgSrc = photo.isPlaceholder
+    ? createPlaceholderImage(photo)
+    : photo.thumbnail;
+  const imgClass = photo.isPlaceholder ? "placeholder-img" : "";
+
+  return `
+    <figure>
+      <img src="${imgSrc}" alt="${photo.alt}" loading="lazy" class="${imgClass}" onload="handleImageLoad(this)">
+      <figcaption class="photo-caption">
+        <h3>${photo.caption}</h3>
+        <p class="photo-year">${photo.year}</p>
+        <p class="photo-description">${photo.description}</p>
+      </figcaption>
+    </figure>
+  `;
+}
+
+/**
+ * Handles keyboard navigation for the category filter tablist
+ * @param {KeyboardEvent} event - Keyboard event
+ */
 function handleTablistKeydown(event) {
-  const tabs = Array.from(document.querySelectorAll('.category-filter'));
-  const currentIndex = tabs.findIndex(tab => tab.getAttribute('tabindex') === '0');
+  const tabs = Array.from(document.querySelectorAll(".category-filter"));
+  const currentIndex = tabs.findIndex(
+    (tab) => tab.getAttribute("tabindex") === "0"
+  );
   let newIndex = currentIndex;
 
   switch (event.key) {
-    case 'ArrowLeft':
-    case 'ArrowUp':
+    case "ArrowLeft":
+    case "ArrowUp":
       event.preventDefault();
       newIndex = currentIndex > 0 ? currentIndex - 1 : tabs.length - 1;
       break;
-    case 'ArrowRight':
-    case 'ArrowDown':
+    case "ArrowRight":
+    case "ArrowDown":
       event.preventDefault();
       newIndex = currentIndex < tabs.length - 1 ? currentIndex + 1 : 0;
       break;
-    case 'Home':
+    case "Home":
       event.preventDefault();
       newIndex = 0;
       break;
-    case 'End':
+    case "End":
       event.preventDefault();
       newIndex = tabs.length - 1;
       break;
@@ -215,8 +347,7 @@ function handleTablistKeydown(event) {
       return;
   }
 
-  // Update focus and tabindex
-  tabs[currentIndex].setAttribute('tabindex', '-1');
-  tabs[newIndex].setAttribute('tabindex', '0');
+  tabs[currentIndex].setAttribute("tabindex", "-1");
+  tabs[newIndex].setAttribute("tabindex", "0");
   tabs[newIndex].focus();
 }
