@@ -2,10 +2,12 @@
  * @fileoverview Gallery functionality for the photo gallery application
  */
 
-if (document.getElementById("content")) {
-  setupGallery();
-  prepareModal();
-}
+document.addEventListener("DOMContentLoaded", () => {
+  if (document.getElementById("content")) {
+    setupGallery();
+    prepareModal();
+  }
+});
 
 /**
  * Sets up the gallery by creating header, gallery grid, and modal templates
@@ -30,25 +32,46 @@ function displayPhotos(filter = "all") {
   if (!grid) return;
 
   grid.innerHTML = "";
+  filteredPhotos = getFilteredPhotos(filter);
+  populatePhotoGrid(grid);
+}
 
-  filteredPhotos =
-    filter === "all"
-      ? photos
-      : photos.filter((photo) => photo.category === filter);
+/**
+ * Filters photos by category
+ * @param {string} filter - Category filter to apply
+ * @returns {Array} Filtered photos array
+ */
+function getFilteredPhotos(filter) {
+  return filter === "all"
+    ? photos
+    : photos.filter((photo) => photo.category === filter);
+}
 
+/**
+ * Populates the photo grid with filtered photos
+ * @param {HTMLElement} grid - Grid container element
+ */
+function populatePhotoGrid(grid) {
   filteredPhotos.forEach((photo, idx) => {
     const item = createPhotoItemTemplate(photo);
-
-    item.onclick = () => showModal(idx);
-    item.onkeydown = (e) => {
-      if (e.key === "Enter" || e.key === " ") {
-        e.preventDefault();
-        showModal(idx);
-      }
-    };
-
+    setupPhotoItemEvents(item, idx);
     grid.appendChild(item);
   });
+}
+
+/**
+ * Sets up click and keyboard events for photo items
+ * @param {HTMLElement} item - Photo item element
+ * @param {number} idx - Photo index
+ */
+function setupPhotoItemEvents(item, idx) {
+  item.onclick = () => showModal(idx);
+  item.onkeydown = (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      showModal(idx);
+    }
+  };
 }
 
 /**
@@ -57,19 +80,27 @@ function displayPhotos(filter = "all") {
  */
 function filterPhotos(category) {
   currentFilter = category;
+  updateFilterButtonStates(category);
+  displayPhotos(category);
+}
 
+/**
+ * Updates the active state of filter buttons
+ * @param {string} activeCategory - Currently active category
+ */
+function updateFilterButtonStates(activeCategory) {
   document.querySelectorAll(".category-filter").forEach((btn) => {
     btn.classList.remove("active");
     btn.setAttribute("aria-selected", "false");
     btn.setAttribute("tabindex", "-1");
   });
 
-  const activeBtn = document.querySelector(`[data-category="${category}"]`);
+  const activeBtn = document.querySelector(
+    `[data-category="${activeCategory}"]`
+  );
   activeBtn.classList.add("active");
   activeBtn.setAttribute("aria-selected", "true");
   activeBtn.setAttribute("tabindex", "0");
-
-  displayPhotos(category);
 }
 
 /**
@@ -322,31 +353,44 @@ function handleTablistKeydown(event) {
   const currentIndex = tabs.findIndex(
     (tab) => tab.getAttribute("tabindex") === "0"
   );
-  let newIndex = currentIndex;
 
-  switch (event.key) {
+  const newIndex = calculateNewTabIndex(event.key, currentIndex, tabs.length);
+  if (newIndex === -1) return;
+
+  updateTabFocus(tabs, currentIndex, newIndex);
+}
+
+/**
+ * Calculates new tab index based on keyboard input
+ * @param {string} key - Pressed key
+ * @param {number} currentIndex - Current tab index
+ * @param {number} tabCount - Total number of tabs
+ * @returns {number} New tab index or -1 if no change needed
+ */
+function calculateNewTabIndex(key, currentIndex, tabCount) {
+  switch (key) {
     case "ArrowLeft":
     case "ArrowUp":
-      event.preventDefault();
-      newIndex = currentIndex > 0 ? currentIndex - 1 : tabs.length - 1;
-      break;
+      return currentIndex > 0 ? currentIndex - 1 : tabCount - 1;
     case "ArrowRight":
     case "ArrowDown":
-      event.preventDefault();
-      newIndex = currentIndex < tabs.length - 1 ? currentIndex + 1 : 0;
-      break;
+      return currentIndex < tabCount - 1 ? currentIndex + 1 : 0;
     case "Home":
-      event.preventDefault();
-      newIndex = 0;
-      break;
+      return 0;
     case "End":
-      event.preventDefault();
-      newIndex = tabs.length - 1;
-      break;
+      return tabCount - 1;
     default:
-      return;
+      return -1;
   }
+}
 
+/**
+ * Updates tab focus from current to new index
+ * @param {Array} tabs - Array of tab elements
+ * @param {number} currentIndex - Current tab index
+ * @param {number} newIndex - New tab index
+ */
+function updateTabFocus(tabs, currentIndex, newIndex) {
   tabs[currentIndex].setAttribute("tabindex", "-1");
   tabs[newIndex].setAttribute("tabindex", "0");
   tabs[newIndex].focus();

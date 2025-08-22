@@ -87,16 +87,31 @@ function handleMobileMenu() {
   const dropdown = document.getElementById("mobile-menu");
   const isExpanded = button.getAttribute("aria-expanded") === "true";
 
+  toggleMobileMenuState(button, dropdown, isExpanded);
+  setupOutsideClickListener(isExpanded);
+}
+
+/**
+ * Toggles the mobile menu state and attributes
+ * @param {HTMLElement} button - Menu button element
+ * @param {HTMLElement} dropdown - Dropdown menu element
+ * @param {boolean} isExpanded - Current expanded state
+ */
+function toggleMobileMenuState(button, dropdown, isExpanded) {
   button.setAttribute("aria-expanded", !isExpanded);
   dropdown.setAttribute("aria-hidden", isExpanded);
-
   button.setAttribute(
     "aria-label",
     !isExpanded ? "Navigationsmenü schließen" : "Navigationsmenü öffnen"
   );
-
   dropdown.classList.toggle("mobile-menu-open", !isExpanded);
+}
 
+/**
+ * Sets up or removes outside click listener
+ * @param {boolean} isExpanded - Current expanded state
+ */
+function setupOutsideClickListener(isExpanded) {
   if (!isExpanded) {
     document.addEventListener("click", closeMobileMenuOnClickOutside);
   } else {
@@ -111,16 +126,23 @@ function handleMobileMenu() {
 function closeMobileMenuOnClickOutside(event) {
   const mobileNav = document.querySelector(".navigation-mobile");
   if (!mobileNav.contains(event.target)) {
-    const button = document.querySelector(".mobile-menu-button");
-    const dropdown = document.getElementById("mobile-menu");
-
-    button.setAttribute("aria-expanded", "false");
-    dropdown.setAttribute("aria-hidden", "true");
-    button.setAttribute("aria-label", "Navigationsmenü öffnen");
-    dropdown.classList.remove("mobile-menu-open");
-
-    document.removeEventListener("click", closeMobileMenuOnClickOutside);
+    closeMobileMenu();
   }
+}
+
+/**
+ * Closes the mobile menu and resets its state
+ */
+function closeMobileMenu() {
+  const button = document.querySelector(".mobile-menu-button");
+  const dropdown = document.getElementById("mobile-menu");
+
+  button.setAttribute("aria-expanded", "false");
+  dropdown.setAttribute("aria-hidden", "true");
+  button.setAttribute("aria-label", "Navigationsmenü öffnen");
+  dropdown.classList.remove("mobile-menu-open");
+
+  document.removeEventListener("click", closeMobileMenuOnClickOutside);
 }
 
 document.addEventListener("DOMContentLoaded", buildHeader);

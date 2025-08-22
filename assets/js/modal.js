@@ -7,14 +7,22 @@
  */
 function prepareModal() {
   const modal = document.getElementById("photoModal");
+  if (!modal) return;
+
+  setupModalEventListeners(modal);
+  setupModalKeyboardControls(modal);
+}
+
+/**
+ * Sets up click event listeners for modal elements
+ * @param {HTMLElement} modal - Modal element
+ */
+function setupModalEventListeners(modal) {
   const closeBtn = document.getElementById("modalClose");
   const prevBtn = document.getElementById("prevBtn");
   const nextBtn = document.getElementById("nextBtn");
 
-  if (!modal) return;
-
   closeBtn.addEventListener("click", hideModal);
-
   modal.addEventListener("click", (e) => {
     if (e.target === modal) hideModal();
   });
@@ -23,6 +31,14 @@ function prepareModal() {
     e.stopPropagation();
     goToPrevious();
   };
+}
+
+/**
+ * Sets up keyboard controls for modal navigation
+ * @param {HTMLElement} modal - Modal element
+ */
+function setupModalKeyboardControls(modal) {
+  const nextBtn = document.getElementById("nextBtn");
 
   nextBtn.onclick = (e) => {
     e.stopPropagation();
@@ -31,19 +47,26 @@ function prepareModal() {
 
   document.addEventListener("keydown", (e) => {
     if (!modal.classList.contains("active")) return;
-
-    switch (e.key) {
-      case "Escape":
-        hideModal();
-        break;
-      case "ArrowLeft":
-        goToPrevious();
-        break;
-      case "ArrowRight":
-        goToNext();
-        break;
-    }
+    handleModalKeydown(e);
   });
+}
+
+/**
+ * Handles keydown events for modal navigation
+ * @param {KeyboardEvent} e - Keyboard event
+ */
+function handleModalKeydown(e) {
+  switch (e.key) {
+    case "Escape":
+      hideModal();
+      break;
+    case "ArrowLeft":
+      goToPrevious();
+      break;
+    case "ArrowRight":
+      goToNext();
+      break;
+  }
 }
 
 /**
@@ -55,22 +78,33 @@ function showModal(index) {
 
   activeIndex = index;
   previousFocus = document.activeElement;
-
   const modal = document.getElementById("photoModal");
 
   updateModalContent();
+  displayModal(modal);
+  setupModalAccessibility(modal);
+}
 
+/**
+ * Displays the modal with animation
+ * @param {HTMLElement} modal - Modal element
+ */
+function displayModal(modal) {
   modal.style.display = "flex";
   modal.offsetHeight;
   modal.classList.add("active");
   modal.setAttribute("aria-hidden", "false");
   document.body.style.overflow = "hidden";
+}
 
+/**
+ * Sets up modal accessibility features
+ * @param {HTMLElement} modal - Modal element
+ */
+function setupModalAccessibility(modal) {
   const closeButton = document.getElementById("modalClose");
   closeButton.focus();
-
   trapFocus(modal);
-
   updateNavButtons();
 }
 
@@ -166,15 +200,11 @@ function getModalElements() {
 function validateModalElements(elements) {
   const { img, caption, modalTitle, technicalDataGrid } = elements;
 
-  if (
-    !img ||
-    !caption ||
-    !modalTitle ||
-    !technicalDataGrid ||
-    !filteredPhotos ||
-    activeIndex < 0 ||
-    activeIndex >= filteredPhotos.length
-  ) {
+  const elementsValid = img && caption && modalTitle && technicalDataGrid;
+  const dataValid =
+    filteredPhotos && activeIndex >= 0 && activeIndex < filteredPhotos.length;
+
+  if (!elementsValid || !dataValid) {
     console.error("Modal elements or photo data not found");
     return false;
   }
@@ -204,6 +234,17 @@ function updateModalDisplay(elements, photo) {
  * @param {Object} photo - Photo data object
  */
 function announcePhotoChange(photo) {
+  const announcement = createAnnouncementElement(photo);
+  document.body.appendChild(announcement);
+  scheduleAnnouncementRemoval(announcement);
+}
+
+/**
+ * Creates an announcement element for screen readers
+ * @param {Object} photo - Photo data object
+ * @returns {HTMLElement} Announcement element
+ */
+function createAnnouncementElement(photo) {
   const announcement = document.createElement("div");
   announcement.setAttribute("aria-live", "polite");
   announcement.setAttribute("aria-atomic", "true");
@@ -211,8 +252,14 @@ function announcePhotoChange(photo) {
   announcement.textContent = `Bild ${activeIndex + 1} von ${
     filteredPhotos.length
   }: ${photo.alt}`;
-  document.body.appendChild(announcement);
+  return announcement;
+}
 
+/**
+ * Schedules removal of announcement element
+ * @param {HTMLElement} announcement - Announcement element to remove
+ */
+function scheduleAnnouncementRemoval(announcement) {
   setTimeout(() => {
     if (announcement.parentNode) {
       announcement.parentNode.removeChild(announcement);
@@ -298,25 +345,44 @@ function updateNavButtons() {
  * @param {HTMLElement} element - Modal element to trap focus within
  */
 function trapFocus(element) {
-  const focusableElements = element.querySelectorAll(
-    'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-  );
+  const focusableElements = getFocusableElements(element);
   const firstElement = focusableElements[0];
   const lastElement = focusableElements[focusableElements.length - 1];
 
   element.addEventListener("keydown", (e) => {
     if (e.key === "Tab") {
-      if (e.shiftKey) {
-        if (document.activeElement === firstElement) {
-          lastElement.focus();
-          e.preventDefault();
-        }
-      } else {
-        if (document.activeElement === lastElement) {
-          firstElement.focus();
-          e.preventDefault();
-        }
-      }
+      handleTabNavigation(e, firstElement, lastElement);
     }
   });
+}
+
+/**
+ * Gets all focusable elements within a container
+ * @param {HTMLElement} element - Container element
+ * @returns {NodeList} List of focusable elements
+ */
+function getFocusableElements(element) {
+  return element.querySelectorAll(
+    'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+  );
+}
+
+/**
+ * Handles tab navigation within focus trap
+ * @param {KeyboardEvent} e - Keyboard event
+ * @param {HTMLElement} firstElement - First focusable element
+ * @param {HTMLElement} lastElement - Last focusable element
+ */
+function handleTabNavigation(e, firstElement, lastElement) {
+  if (e.shiftKey) {
+    if (document.activeElement === firstElement) {
+      lastElement.focus();
+      e.preventDefault();
+    }
+  } else {
+    if (document.activeElement === lastElement) {
+      firstElement.focus();
+      e.preventDefault();
+    }
+  }
 }
